@@ -1,13 +1,16 @@
-1. Setup Kafka runtime
+## Demo
+
+##### Setup Kafka runtime
 
 In vallina kafka directory,
+
 ```
 $ cd vallina-kafka-dir
 $ bin/zookeeper-server-start.sh config/zookeeper.properties
 $ bin/kafka-server-start.sh config/server.properties
 ```
 
-2. Setup Kafka schema registry
+##### Setup Kafka schema registry
 
 In Confluent Kafka,
 
@@ -18,7 +21,7 @@ $ bin/schema-registry-start etc/schema-registry/schema-registry.properties
 
 The used schema-registry.properties is under `config/`
 
-3. Setup Kafka Connector(JDBC Sink Connector)
+##### Setup Kafka Connector(JDBC Sink Connector)
 
 In Confluent Kafka,
 
@@ -27,15 +30,17 @@ $ bin/connect-standalone etc/schema-registry/connect-avro-standalone.properties 
     etc/kafka-connect-jdbc/sink-quickstart-postgresql.properties
 ```
 
-4. Setup TimescaleDB(predefine DB schema and hypertable extension)
+##### Setup TimescaleDB(predefine DB schema and hypertable extension)
 
 Install TimescaleDB,
+
 ```
 docker run -d --name timescaledb -p 5432:5432 -e POSTGRES_PASSWORD=password timescale/timescaledb
 docker exec -it timescaledb psql -U postgres
 ```
 
 Predefine schema and enable hypertable extension,
+
 ```
 CREATE database metrics;
 \c metrics;
@@ -49,9 +54,10 @@ CREATE TABLE 'metric' (
 SELECT create_hypertable('metric', 'time');
 ```
 
-5. Setup avro producer
+##### Setup avro producer
 
 Metric.avsc
+
 ```
 {"namespace": "com.github.aihex.metric",
    "type": "record",
@@ -68,4 +74,4 @@ Metric.avsc
 
 For demo producer code, refer to `src/main/java/com/github/aihex/avro_demo/AvroProducer.java`
 
-6. Query table
+##### Query table
