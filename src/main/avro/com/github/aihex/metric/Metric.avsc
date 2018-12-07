@@ -1,0 +1,11 @@
+{"namespace": "com.github.aihex.metric",
+   "type": "record",
+     "name": "Metric",
+     "doc" : "Represents an Metric for a device",
+     "fields": [
+        {"name": "time", "type": {"type": "long", "logicalType": "timestamp-millis"}},
+        {"name": "device", "type": "string"},
+        {"name": "cpu", "type": "double"},
+        {"name": "memory",  "type": "long"}
+     ]
+}

@@ -1,0 +1,71 @@
+1. Setup Kafka runtime
+
+In vallina kafka directory,
+```
+$ cd vallina-kafka-dir
+$ bin/zookeeper-server-start.sh config/zookeeper.properties
+$ bin/kafka-server-start.sh config/server.properties
+```
+
+2. Setup Kafka schema registry
+
+In Confluent Kafka,
+
+```
+cd confluent-kafka
+$ bin/schema-registry-start etc/schema-registry/schema-registry.properties
+```
+
+The used schema-registry.properties is under `config/`
+
+3. Setup Kafka Connector(JDBC Sink Connector)
+
+In Confluent Kafka,
+
+```
+$ bin/connect-standalone etc/schema-registry/connect-avro-standalone.properties \ 
+    etc/kafka-connect-jdbc/sink-quickstart-postgresql.properties
+```
+
+4. Setup TimescaleDB(predefine DB schema and hypertable extension)
+
+Install TimescaleDB,
+```
+docker run -d --name timescaledb -p 5432:5432 -e POSTGRES_PASSWORD=password timescale/timescaledb
+docker exec -it timescaledb psql -U postgres
+```
+
+Predefine schema and enable hypertable extension,
+```
+CREATE database metrics;
+\c metrics;
+CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE;
+CREATE TABLE 'metric' (
+  time      TIMESTAMPTZ       NOT NULL,
+  device    TEXT              NOT NULL,
+  cpu       DOUBLE PRECISION  NOT NULL,
+  memory    BIGINT  NULL      NOT NULL
+);
+SELECT create_hypertable('metric', 'time');
+```
+
+5. Setup avro producer
+
+Metric.avsc
+```
+{"namespace": "com.github.aihex.metric",
+   "type": "record",
+     "name": "Metric",
+     "doc" : "Represents an Metric for a device",
+     "fields": [
+        {"name": "time", "type": {"type": "long", "logicalType": "timestamp-millis"}},
+        {"name": "device", "type": "string"},
+        {"name": "cpu", "type": "double"},
+        {"name": "memory",  "type": "long"}
+     ]
+}
+```
+
+For demo producer code, refer to `src/main/java/com/github/aihex/avro_demo/AvroProducer.java`
+
+6. Query table

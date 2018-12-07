@@ -1,0 +1,14 @@
+{"namespace": "com.github.aihex.phonebook",
+   "type": "record",
+     "name": "Employee",
+     "doc" : "Represents an Employee at a company",
+     "fields": [
+       {"name": "firstName", "type": "string", "doc": "The persons given name"},
+       {"name": "nickName", "type": ["null", "string"], "default" : null},
+       {"name": "lastName", "type": "string"},
+       {"name": "age",  "type": "int", "default": -1},
+       {"name":"status", "default" :"SALARY", "type": { "type": "enum", "name": "Status",
+         "symbols" : ["RETIRED", "SALARY", "HOURLY", "PART_TIME"]}
+       }
+     ]
+}
