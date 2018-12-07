@@ -4,7 +4,7 @@
 
 In vallina kafka directory,
 
-```
+```shell
 $ cd vallina-kafka-dir
 $ bin/zookeeper-server-start.sh config/zookeeper.properties
 $ bin/kafka-server-start.sh config/server.properties
@@ -14,7 +14,7 @@ $ bin/kafka-server-start.sh config/server.properties
 
 In Confluent Kafka,
 
-```
+```shell
 cd confluent-kafka
 $ bin/schema-registry-start etc/schema-registry/schema-registry.properties
 ```
@@ -25,7 +25,7 @@ The used schema-registry.properties is under `config/`
 
 In Confluent Kafka,
 
-```
+```shell
 $ bin/connect-standalone etc/schema-registry/connect-avro-standalone.properties \ 
     etc/kafka-connect-jdbc/sink-quickstart-postgresql.properties
 ```
@@ -35,13 +35,13 @@ $ bin/connect-standalone etc/schema-registry/connect-avro-standalone.properties 
 Install TimescaleDB,
 
 ```
-docker run -d --name timescaledb -p 5432:5432 -e POSTGRES_PASSWORD=password timescale/timescaledb
-docker exec -it timescaledb psql -U postgres
+$ docker run -d --name timescaledb -p 5432:5432 -e POSTGRES_PASSWORD=password timescale/timescaledb
+$ docker exec -it timescaledb psql -U postgres
 ```
 
 Predefine schema and enable hypertable extension,
 
-```
+```sql
 CREATE database metrics;
 \c metrics;
 CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE;
@@ -58,7 +58,7 @@ SELECT create_hypertable('metric', 'time');
 
 Metric.avsc
 
-```
+```json
 {"namespace": "com.github.aihex.metric",
    "type": "record",
      "name": "Metric",
